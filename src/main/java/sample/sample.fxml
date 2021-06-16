@@ -1,0 +1,15 @@
+<?import javafx.scene.control.Button?>
+
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.GridPane?>
+<GridPane fx:controller="sample.Controller"
+          xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
+    <TextArea fx:id="mainField" GridPane.rowIndex="0" GridPane.halignment="CENTER" prefHeight="300"
+              editable="false" wrapText="true" focusTraversable="false"/>
+
+    <TextArea fx:id="msgArea" onKeyPressed="#enterSend" GridPane.rowIndex="1" maxHeight="70" maxWidth="600"
+              promptText="Введите свое сообщение" wrapText="true" />
+
+    <Button fx:id="btnSendMsg" onAction="#btnClick" text="Отправить" GridPane.rowIndex="1" GridPane.halignment="RIGHT"
+            disable="true"/>
+</GridPane>
