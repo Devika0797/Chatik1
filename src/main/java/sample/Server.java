@@ -6,12 +6,15 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 /**
  * само приложение
  */
 public class Server {
 
+    private static final Logger LOGGER = LogManager.getLogManager().getLogger(String.valueOf(Server.class));
     private List <ClientHandler> clients;
     private AuthService authService;
 
@@ -26,11 +29,12 @@ public class Server {
             };
 
             authService.start();
+            LOGGER.info("Server started");
             clients = new ArrayList<>();
             while (true) {
-                System.out.println("Сервер ожидает подключения");
+                LOGGER.info("Сервер ожидает подключения");
                 Socket socket = server.accept();
-                System.out.println("Клиент подключился");
+                LOGGER.info("Клиент подключился");
                 new ClientHandler(this, socket);
             }
         } catch (IOException e) {
@@ -38,6 +42,7 @@ public class Server {
         } finally {
             if (authService != null) {
                 authService.stop();
+                LOGGER.info("Server stopped");
             }
         }
     }

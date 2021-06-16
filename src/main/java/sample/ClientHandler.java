@@ -1,5 +1,8 @@
 package sample;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -14,6 +17,9 @@ import java.util.concurrent.Executors;
  * обслуживает клиента,  отвечает за связь между клиентом и сервером
  */
 public class ClientHandler {
+
+    private static final Logger LOGGER = LogManager.getLogger(ClientHandler.class);
+
     private Server server;
     private Socket socket;
     private DataInputStream inputStream;
@@ -40,7 +46,7 @@ public class ClientHandler {
                 @Override
                 public void run() {
                     try {
-                        System.out.println("Authentification...");
+                        LOGGER.info("Authentification...");
                         authentification(); //авторизация как в чатике
                         readMessages(); //чтение сообзений
                         //closeConnection();
@@ -48,7 +54,7 @@ public class ClientHandler {
                         e.printStackTrace();
                     } finally {
                         try {
-                           System.out.println("Close connection");
+                            LOGGER.info("Close connection");
                             closeConnection();
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -57,7 +63,7 @@ public class ClientHandler {
                 }
             });
         } catch (IOException e) {
-            System.out.println("Проблема при создании клинета.");
+            LOGGER.warn("Проблема при создании клинета.");
         }
     }
 
@@ -118,7 +124,7 @@ public class ClientHandler {
     private void readMessages() throws IOException {
         while (true) {
             String messageFromClient = inputStream.readUTF();
-            System.out.println("от " + name + ": " + messageFromClient);
+            LOGGER.trace("от " + name + ": " + messageFromClient);
 
             if (messageFromClient.startsWith(ChatConstants.STOP_WORD)) {
                 return;
